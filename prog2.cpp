@@ -69,6 +69,7 @@
 
 /***************************************************************************//**
  * @author Hayden Waisanen
+ * @author David Jarman
  *
  * @par Description:
  * Launches GUI.
