@@ -18,7 +18,13 @@ class MyApp : public QObject
     Q_OBJECT;
 public slots:
     //Palette Functions
-    //bool Menu_Palette_GrayScale(Image &image);
+    bool Menu_PreDefined_GrayScale(Image &image);
+    bool Menu_PreDefined_DisplayHistogram(Image &image);
+    bool Menu_PreDefined_HistogramStretch(Image &image);
+    bool Menu_PreDefined_HistogramEquilization(Image &image);
+    bool Menu_PreDefined_BinaryThreshold(Image &image);
+    bool Menu_PreDefined_GaussianNoise(Image &image);
+    bool Menu_PreDefined_ImpulseNoise(Image &image);
 };
 
 #endif // PROG2_H

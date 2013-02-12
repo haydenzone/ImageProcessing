@@ -88,3 +88,158 @@ int main( int argc, char *argv[] )
     return app.Start();
 }
 
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Converts an image to grayscale
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_PreDefined_GrayScale(Image &image)
+{
+    return grayscale(image);
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Displays the histogram of the image in a seperate window
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_PreDefined_DisplayHistogram(Image &image)
+{
+    displayHistogram(image);
+
+    return true;
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Performs a histogram stretch on the image
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_PreDefined_HistogramStretch(Image &image)
+{
+    return histogramStretch(image);
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Performs a histogram equilization on the image
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_PreDefined_HistogramEquilization(Image &image)
+{
+    return histogramEqualize(image);
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Turns the image into black and white based on an intensity threshold
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_PreDefined_BinaryThreshold(Image &image)
+{
+    int threshold = 128;
+    Dialog thresholdDialog;
+    thresholdDialog.Add(threshold, "Enter threshold", 0, 255);
+    if(!thresholdDialog.Show())
+    {
+        return false;
+    }
+
+    return binaryThreshold(image, threshold);
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Adds Gaussian noise to the image
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_PreDefined_GaussianNoise(Image &image)
+{
+    double sigma = 8.0;
+    Dialog noiseDialog;
+    noiseDialog.Add(sigma, "Enter sigma", 0.0, 100.0);
+    if(!noiseDialog.Show())
+    {
+        return false;
+    }
+
+    gaussianNoise(image, sigma);
+
+    return true;
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Adds impulse noise to the image
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_PreDefined_ImpulseNoise(Image &image)
+{
+    int probability = 64;
+    Dialog noiseDialog;
+    noiseDialog.Add(probability, "Enter probability", 0, 1000);
+    if(!noiseDialog.Show())
+    {
+        return false;
+    }
+
+    impulseNoise(image, probability);
+
+    return true;
+}
