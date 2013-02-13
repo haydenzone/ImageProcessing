@@ -21,10 +21,12 @@ class MyApp : public QObject
 
 protected:
     qreal Clamp(qreal value, qreal left, qreal right);
-    bool ApplyFilter(Image &image, int filter[3][3]);
     int CreateSum(int filter[3][3]);
+
+    virtual bool ApplyFilter(Image &image, int filter[3][3]);
     virtual bool SmoothingFilter(Image &image);
     virtual bool SharpeningFilter(Image &image);
+    virtual bool PlusShapedMedianFilter(Image &image);
 
 public slots:
     //Palette Functions
@@ -38,6 +40,7 @@ public slots:
 
     bool Menu_Filters_Smooth(Image &image);
     bool Menu_Filters_Sharpen(Image &image);
+    bool Menu_Filters_PlusShapedMedian(Image &image);
 };
 
 #endif // PROG2_H

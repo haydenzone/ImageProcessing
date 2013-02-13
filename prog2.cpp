@@ -283,6 +283,24 @@ bool MyApp::Menu_Filters_Sharpen(Image &image)
 }
 
 
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Provides a menu option for applying a plus shaped median filter
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_Filters_PlusShapedMedian(Image &image)
+{
+    return PlusShapedMedianFilter(image);
+}
+
+
 /*******************************************************************************
  * Transform Functions
  ******************************************************************************/
@@ -444,8 +462,30 @@ bool MyApp::SmoothingFilter(Image &image)
 bool MyApp::SharpeningFilter(Image &image)
 {
     int sharpeningFilter[3][3] = {{0, -1, 0},
-                                 {-1, 5, -1},
-                                 {0, -1, 0}};
+                                  {-1, 5, -1},
+                                  {0, -1, 0}};
 
     return ApplyFilter(image, sharpeningFilter);
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Applies a 3x3 plus shaped median filter
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::PlusShapedMedianFilter(Image &image)
+{
+    int filter[3][3] = {{0, 1, 0},
+                        {1, 1, 1},
+                        {0, 1, 0}};
+
+    return ApplyFilter(image, filter);
 }
