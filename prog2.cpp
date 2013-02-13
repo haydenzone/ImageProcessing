@@ -88,7 +88,9 @@ int main( int argc, char *argv[] )
     return app.Start();
 }
 
-
+/*******************************************************************************
+ * Menu Functions
+ ******************************************************************************/
 
 /***************************************************************************//**
  * @author David Jarman
@@ -242,4 +244,149 @@ bool MyApp::Menu_PreDefined_ImpulseNoise(Image &image)
     impulseNoise(image, probability);
 
     return true;
+}
+
+
+
+bool MyApp::Menu_Filters_Smooth(Image &image)
+{
+    return SmoothingFilter(image);
+}
+
+
+/*******************************************************************************
+ * Transform Functions
+ ******************************************************************************/
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Clamps the value between the left and right values so that
+ * left <= value <= right
+ *
+ * @param[in] filter
+ *
+ * @returns int
+ *
+ ******************************************************************************/
+qreal MyApp::Clamp(qreal value, qreal left, qreal right)
+{
+    //Swap left and right if left is greater than right
+    if(left > right)
+    {
+        int temp = left;
+        left = right;
+        right = temp;
+    }
+
+    return value < left ? left : value > right ? right : value;
+}
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Creates a sum based on the filter
+ *
+ * @param[in] filter
+ *
+ * @returns int
+ *
+ ******************************************************************************/
+int MyApp::CreateSum(int filter[3][3])
+{
+    int sum = 0;
+    for(int i = 0; i < 3; i++)
+    {
+        for(int j = 0; j < 3; j++)
+        {
+            sum += filter[i][j];
+        }
+    }
+
+    return sum;
+}
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Applies a generic filter to the image
+ *
+ * @param[in] image
+ * @param[in] filter
+ * @param[in] n
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::ApplyFilter(Image &image, int filter[3][3])
+{
+    int offset = 1;
+    int sum = CreateSum(filter);
+    double normalFilter[3][3] = {{0}, {0}, {0}};
+
+    for(int i = 0; i < 3; i++)
+    {
+        for(int j = 0; j < 3; j++)
+        {
+            normalFilter[i][j] = filter[i][j] / (double)sum;
+        }
+    }
+
+    try
+    {
+        for(int col = offset; col < image.Height() - offset; col++)
+        {
+            for(int row = offset; row < image.Width() - offset; row++)
+            {
+                double newIntensity = 0.0;
+
+                for(int colFilter = 0; colFilter < 3; colFilter++)
+                {
+                    for(int rowFilter = 0; rowFilter < 3; rowFilter++)
+                    {
+                        int imageCol = col - offset + colFilter;
+                        int imageRow = row - offset + rowFilter;
+
+                        newIntensity += normalFilter[colFilter][rowFilter] * image[imageCol][imageRow].Intensity();
+                    }
+                }
+
+                int clampedIntensity = Clamp(newIntensity + .5, 0, 255);
+
+                image[col][row].SetIntensity(clampedIntensity);
+            }
+        }
+    }
+    catch(exception& ex)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Applies a 3x3 smoothing filter to the image
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::SmoothingFilter(Image &image)
+{
+    int smoothingFilter[3][3] = {{1, 2, 1},
+                                 {2, 4, 2},
+                                 {1, 2, 1}};
+
+    return ApplyFilter(image, smoothingFilter);
 }

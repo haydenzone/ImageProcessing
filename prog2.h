@@ -13,9 +13,18 @@
  ******************************************************************************/
 #include <qtimagelib.h>
 
+using namespace std;
+
 class MyApp : public QObject
 {
     Q_OBJECT;
+
+protected:
+    qreal Clamp(qreal value, qreal left, qreal right);
+    bool ApplyFilter(Image &image, int filter[3][3]);
+    int CreateSum(int filter[3][3]);
+    virtual bool SmoothingFilter(Image &image);
+
 public slots:
     //Palette Functions
     bool Menu_PreDefined_GrayScale(Image &image);
@@ -25,6 +34,8 @@ public slots:
     bool Menu_PreDefined_BinaryThreshold(Image &image);
     bool Menu_PreDefined_GaussianNoise(Image &image);
     bool Menu_PreDefined_ImpulseNoise(Image &image);
+
+    bool Menu_Filters_Smooth(Image &image);
 };
 
 #endif // PROG2_H
