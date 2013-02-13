@@ -248,9 +248,38 @@ bool MyApp::Menu_PreDefined_ImpulseNoise(Image &image)
 
 
 
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Provides a menu option for smoothing an image
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
 bool MyApp::Menu_Filters_Smooth(Image &image)
 {
     return SmoothingFilter(image);
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Provides a menu option for sharpening an image
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_Filters_Sharpen(Image &image)
+{
+    return SharpeningFilter(image);
 }
 
 
@@ -268,7 +297,7 @@ bool MyApp::Menu_Filters_Smooth(Image &image)
  *
  * @param[in] filter
  *
- * @returns int
+ * @returns qreal
  *
  ******************************************************************************/
 qreal MyApp::Clamp(qreal value, qreal left, qreal right)
@@ -328,6 +357,14 @@ bool MyApp::ApplyFilter(Image &image, int filter[3][3])
 {
     int offset = 1;
     int sum = CreateSum(filter);
+
+    Image copyImage = image;
+
+    if(sum <= 0)
+    {
+        return false;
+    }
+
     double normalFilter[3][3] = {{0}, {0}, {0}};
 
     for(int i = 0; i < 3; i++)
@@ -353,7 +390,7 @@ bool MyApp::ApplyFilter(Image &image, int filter[3][3])
                         int imageCol = col - offset + colFilter;
                         int imageRow = row - offset + rowFilter;
 
-                        newIntensity += normalFilter[colFilter][rowFilter] * image[imageCol][imageRow].Intensity();
+                        newIntensity += normalFilter[colFilter][rowFilter] * copyImage[imageCol][imageRow].Intensity();
                     }
                 }
 
@@ -389,4 +426,26 @@ bool MyApp::SmoothingFilter(Image &image)
                                  {1, 2, 1}};
 
     return ApplyFilter(image, smoothingFilter);
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Applies a 3x3 sharpening filter to the image
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::SharpeningFilter(Image &image)
+{
+    int sharpeningFilter[3][3] = {{0, -1, 0},
+                                 {-1, 5, -1},
+                                 {0, -1, 0}};
+
+    return ApplyFilter(image, sharpeningFilter);
 }

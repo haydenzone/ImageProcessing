@@ -24,6 +24,7 @@ protected:
     bool ApplyFilter(Image &image, int filter[3][3]);
     int CreateSum(int filter[3][3]);
     virtual bool SmoothingFilter(Image &image);
+    virtual bool SharpeningFilter(Image &image);
 
 public slots:
     //Palette Functions
@@ -36,6 +37,7 @@ public slots:
     bool Menu_PreDefined_ImpulseNoise(Image &image);
 
     bool Menu_Filters_Smooth(Image &image);
+    bool Menu_Filters_Sharpen(Image &image);
 };
 
 #endif // PROG2_H
