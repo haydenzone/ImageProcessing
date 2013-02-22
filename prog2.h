@@ -45,6 +45,11 @@ public slots:
     //Neighborhood Filters
     bool Menu_NeighborhoodFilters_Maximum(Image &image);
     bool Menu_NeighborhoodFilters_Minimum(Image &image);
+    bool Menu_NeighborhoodFilters_Median(Image &image);
+
+    bool Menu_NeighborhoodFilters_Mean(Image &image);
+    bool Menu_NeighborhoodFilters_Range(Image &image);
+    bool Menu_NeighborhoodFilters_StandardDeviation(Image &image);
 };
 
 #endif // PROG2_H
