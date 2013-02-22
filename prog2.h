@@ -41,6 +41,10 @@ public slots:
     bool Menu_Filters_Smooth(Image &image);
     bool Menu_Filters_Sharpen(Image &image);
     bool Menu_Filters_PlusShapedMedian(Image &image);
+
+    //Neighborhood Filters
+    bool Menu_NeighborhoodFilters_Maximum(Image &image);
+    bool Menu_NeighborhoodFilters_Minimum(Image &image);
 };
 
 #endif // PROG2_H
