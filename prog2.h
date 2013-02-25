@@ -27,6 +27,9 @@ protected:
     virtual bool SmoothingFilter(Image &image);
     virtual bool SharpeningFilter(Image &image);
     virtual bool PlusShapedMedianFilter(Image &image);
+    virtual bool OutOfRangeNoiseCleaner(double threshold, Image &image);
+    virtual bool Emboss(Image &image);
+
 
 public slots:
     //Palette Functions
@@ -41,6 +44,7 @@ public slots:
     bool Menu_Filters_Smooth(Image &image);
     bool Menu_Filters_Sharpen(Image &image);
     bool Menu_Filters_PlusShapedMedian(Image &image);
+    bool Menu_Filters_OutOfRangeNoiseClean(Image &image);
 
     //Neighborhood Filters
     bool Menu_NeighborhoodFilters_Maximum(Image &image);
@@ -50,6 +54,9 @@ public slots:
     bool Menu_NeighborhoodFilters_Mean(Image &image);
     bool Menu_NeighborhoodFilters_Range(Image &image);
     bool Menu_NeighborhoodFilters_StandardDeviation(Image &image);
+
+    //Other
+    bool Menu_Other_Embossing(Image &image);
 };
 
 #endif // PROG2_H

@@ -148,6 +148,7 @@ int std_filter(int x, int y, int n, Image& image)
 
     return std;
 }
+
 bool MyApp::Menu_NeighborhoodFilters_Maximum(Image &image)
 {
     int n = 0;

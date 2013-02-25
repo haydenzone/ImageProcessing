@@ -300,6 +300,19 @@ bool MyApp::Menu_Filters_PlusShapedMedian(Image &image)
     return PlusShapedMedianFilter(image);
 }
 
+bool MyApp::Menu_Filters_OutOfRangeNoiseClean(Image &image)
+{
+    int threshold = 128;
+    Dialog thresholdDialog;
+    thresholdDialog.Add(threshold, "Enter threshold", 0, 255);
+    if(!thresholdDialog.Show())
+    {
+        return false;
+    }
+
+    return OutOfRangeNoiseCleaner(threshold, image);
+}
+
 
 /*******************************************************************************
  * Transform Functions
@@ -470,6 +483,26 @@ bool MyApp::SharpeningFilter(Image &image)
 
 
 
+bool MyApp::Menu_Other_Embossing(Image &image)
+{
+    return Emboss(image);
+}
+
+
+bool MyApp::Emboss(Image &image)
+{
+    for (int row = 0; row < image.Height() - 1; row++)
+    {
+        for (int col = 0; col < image.Width() - 1; col++)
+        {
+            image[row][col] = (image[row][col] - image[row+1][col+1]) / 2.0 + 128.5;
+        }
+    }
+
+    return true;
+}
+
+
 /***************************************************************************//**
  * @author David Jarman
  *
@@ -488,4 +521,39 @@ bool MyApp::PlusShapedMedianFilter(Image &image)
                         {0, 1, 0}};
 
     return ApplyFilter(image, filter);
+}
+
+
+bool MyApp::OutOfRangeNoiseCleaner(double threshold, Image &image)
+{
+    Image copy = image;
+
+    for (int row = 1; row < image.Height() - 1; row++)
+    {
+        for (int col = 1; col < image.Width() - 1; col++)
+        {
+            double p_bar = 0.0;
+            for (int p_row = row - 1; p_row <= row + 1; p_row++)
+            {
+                for (int p_col = col - 1; p_col <= col + 1; p_col++)
+                {
+                    if (p_row != row && p_col != col)
+                    {
+                        p_bar += copy[p_row][p_col];
+                    }
+                }
+            }
+
+            p_bar /= 8.0;
+
+            double p_0 = copy[row][col];
+
+            if (qAbs(p_0 - p_bar) > threshold)
+            {
+                image[row][col] = p_bar + .5;
+            }
+        }
+    }
+
+    return true;
 }
