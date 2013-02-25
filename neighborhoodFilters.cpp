@@ -14,14 +14,14 @@ void applyNbyNfilter(Image &image, int n, int (*filter)(int, int, int, Image&))
     Image img_copy = image;
 
     //Force n to an odd number if it is not
-    if(n%2 == 1) n--;
+    if(n%2 == 0) n--;
 
     //Calculate span
     span = (n-1)/2;
 
     //Loop through and apply filter (cutting out span on edges)
-    for(int row = span; row < (image.Height()-span-1); row++)
-        for(int col = span; col < (image.Width()-span-1); col++)
+    for(int row = span; row < (image.Height()-span); row++)
+        for(int col = span; col < (image.Width()-span); col++)
             image[row][col].SetIntensity( filter(row, col, n, img_copy));
 
     return;
