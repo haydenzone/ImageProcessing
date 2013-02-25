@@ -12,6 +12,7 @@
  * @date February 4, 2023
  ******************************************************************************/
 #include <qtimagelib.h>
+#include <iostream>
 
 using namespace std;
 
@@ -29,6 +30,8 @@ protected:
     virtual bool PlusShapedMedianFilter(Image &image);
     virtual bool OutOfRangeNoiseCleaner(double threshold, Image &image);
     virtual bool Emboss(Image &image);
+    virtual bool SobolMagnitude(Image &image);
+    virtual bool SobolDirection(Image &image);
 
 
 public slots:
@@ -45,6 +48,7 @@ public slots:
     bool Menu_Filters_Sharpen(Image &image);
     bool Menu_Filters_PlusShapedMedian(Image &image);
     bool Menu_Filters_OutOfRangeNoiseClean(Image &image);
+    bool Menu_Filters_Embossing(Image &image);
 
     //Neighborhood Filters
     bool Menu_NeighborhoodFilters_Maximum(Image &image);
@@ -55,8 +59,9 @@ public slots:
     bool Menu_NeighborhoodFilters_Range(Image &image);
     bool Menu_NeighborhoodFilters_StandardDeviation(Image &image);
 
-    //Other
-    bool Menu_Other_Embossing(Image &image);
+    //Edge Detectors
+    bool Menu_Edge_SobolMagnitude(Image &image);
+    bool Menu_Edge_SobolDirection(Image &image);
 };
 
 #endif // PROG2_H
