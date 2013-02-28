@@ -1,5 +1,17 @@
+/***************************************************************************//**
+ * @file edgeDetection.cpp
+ ******************************************************************************/
+
+/******************************************************************************
+ * Includes
+ ******************************************************************************/
 #include "prog2.h"
 #include <qmath.h>
+#include "imageHelper.h"
+
+/******************************************************************************
+ * Prototypes
+ ******************************************************************************/
 int laplacian_filter( int x, int y, int n, Image & image );
 int kirsch_magnitude_filter( int x, int y, int n, Image & image );
 int kirsch_filter( int x, int y, int n, Image & image );
@@ -86,20 +98,35 @@ bool MyApp::SobolDirection(Image &image)
     return true;
 }
 
+/*******************************************************************************
+ *
+ *      Filter Functions
+ *
+ ******************************************************************************/
 
-bool MyApp::Menu_Edge_LaPlacian(Image &image)
-{
-
-    applyNbyNfilter(image, 3, laplacian_filter);
-    return true;
-}
-
+/***************************************************************************//**
+ * @author Hayden Waisanen
+ *
+ * @par Description:
+ * This function calculates the laplacian filter output for an 3 x 3 region
+ * centered at x-y in image.
+ *
+ * @param[in] x         - center index for row
+ * @param[in] y         - center index for col
+ * @param[in] n         - dimension of area to filter
+ * @param[in] image
+ *
+ * @returns int
+ *
+ ******************************************************************************/
 int laplacian_filter( int x, int y, int n, Image & image )
 {
+    //Laplacian filter
     int filter[3][3] = {{-1, -1, -1},
                         {-1, 8, -1},
                         {-1, -1, -1}};
 
+    //Apply the filter
     int sum = 0;
     for(int i = 0; i < 3; i++)
     {
@@ -117,69 +144,29 @@ int laplacian_filter( int x, int y, int n, Image & image )
     return sum;
 }
 
-bool MyApp::Menu_Edge_KirschMagnitude(Image &image)
-{
-
-    applyNbyNfilter(image, 3, kirsch_magnitude_filter);
-    return true;
-}
-void generate_kirsch_filters(int target[][3][3])
-{
-    static int filter[8][3][3] = {
-                            {
-                                {-3, -3, 5},
-                                {-3, 0, 5},
-                                {-3, -3, 5}
-                            },
-                            {
-                                {-3, 5, 5},
-                                {-3, 0, 5},
-                                {-3, -3, -3}
-                            },
-                            {
-                                {5, 5, 5},
-                                {-3, 0, -3},
-                                {-3, -3, -3}
-                            },
-                            {
-                                {5, 5, -3},
-                                {5, 0, -3},
-                                {-3, -3, -3}
-                            },
-                            {
-                                {5, -3, -3},
-                                {5, 0, -3},
-                                {5, -3, -3}
-                            },
-                            {
-                                {-3, -3, -3},
-                                {5, 0, -3},
-                                {5, 5, -3}
-                            },
-                            {
-                                {-3, -3, -3},
-                                {-3, 0, -3},
-                                {5, 5, 5}
-                            },
-                            {
-                                {-3, -3, -3},
-                                {-3, 0, 5},
-                                {-3, 5, 5}
-                            }
-                        };
-    for(int i = 0; i < 8; i++)
-        for(int j = 0; j < 3; j++)
-            for(int k = 0; k < 3; k++)
-                target[i][j][k] = filter[i][j][k];
-    return;
-}
+/***************************************************************************//**
+ * @author Hayden Waisanen
+ *
+ * @par Description:
+ * This function calculates which kirsch filter has the biggest response on the
+ * n X n region centered at x-y. The response is then clipped (as specified
+ * from the program requirements), and returned.
+ *
+ * @param[in] x         - center index for row
+ * @param[in] y         - center index for col
+ * @param[in] n         - dimension of area to filter
+ * @param[in] image
+ *
+ * @returns int
+ *
+ ******************************************************************************/
 int kirsch_magnitude_filter( int x, int y, int n, Image & image )
 {
-    int filter[8][3][3];
+    int filter[8][3][3];    //Kirsch filters
 
-    int sum = 0;
-    int max_sum = 0;
-    int max_i = 0;
+    int sum = 0;        //Response of filter
+    int max_sum = 0;    //Maximum response
+    int max_i = 0;      //Index of filter with max response
 
     //Generate the filter
     generate_kirsch_filters(filter);
@@ -212,23 +199,36 @@ int kirsch_magnitude_filter( int x, int y, int n, Image & image )
     return max_sum;
 }
 
-bool MyApp::Menu_Edge_Kirsch(Image &image)
-{
-    applyNbyNfilter(image, 3, kirsch_filter);
-    return true;
-}
+/***************************************************************************//**
+ * @author Hayden Waisanen
+ *
+ * @par Description:
+ * This function calculates which kirsch filter has the biggest response on the
+ * n X n region centered at x-y. The index of the filter is then mapped into
+ * a particular intensity value between 0 and 244.
+ *
+ * @param[in] x         - center index for row
+ * @param[in] y         - center index for col
+ * @param[in] n         - dimension of area to filter
+ * @param[in] image
+ *
+ * @returns int
+ *
+ ******************************************************************************/
 int kirsch_filter( int x, int y, int n, Image & image )
 {
-    int filter[8][3][3];
-    int sum = 0;
-    int max_sum = 0;
-    int max_i = 0;
+    int filter[8][3][3];    //Kirsch filters
+    int sum = 0;            //Response from filter
+    int max_sum = 0;        //Highest response
+    int max_i = 0;          //Index of filter with highest response
 
-    //Generate the filter
+    //Generate the filters
     generate_kirsch_filters(filter);
+
+    //Apply filters
     for(int filter_i = 0; filter_i < 8; filter_i++)
     {
-        //Apply the filter and calculate the sum
+        //Calculate response from filter
         sum = 0;
         for(int i = 0; i < 3; i++)
         {
@@ -237,6 +237,8 @@ int kirsch_filter( int x, int y, int n, Image & image )
                 sum += filter[filter_i][i][j]*image[x-1+i][y-1+j];
             }
         }
+
+        //Keep track of the filter with the highest response
         if(sum > max_sum)
         {
             max_i = filter_i;
@@ -245,6 +247,63 @@ int kirsch_filter( int x, int y, int n, Image & image )
     }
 
     //Map max_i into an intensity
-
     return (((max_i)%8)*255)/8;
+}
+
+/*******************************************************************************
+ *
+ *      Menu Functions
+ *
+ ******************************************************************************/
+
+/***************************************************************************//**
+ * @author Hayden Waisanen
+ *
+ * @par Description:
+ * Applies teh kirsch direction filter
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_Edge_KirschDirection(Image &image)
+{
+    applyNbyNfilter(image, 3, kirsch_filter);
+    return true;
+}
+
+/***************************************************************************//**
+ * @author Hayden Waisanen
+ *
+ * @par Description:
+ * Applies the kirsch magnitude filter
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_Edge_KirschMagnitude(Image &image)
+{
+    applyNbyNfilter(image, 3, kirsch_magnitude_filter);
+    return true;
+}
+
+/***************************************************************************//**
+ * @author Hayden Waisanen
+ *
+ * @par Description:
+ * Applies the laplacian
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool MyApp::Menu_Edge_Laplacian(Image &image)
+{
+
+    applyNbyNfilter(image, 3, laplacian_filter);
+    return true;
 }

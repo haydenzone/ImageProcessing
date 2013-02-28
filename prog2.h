@@ -16,9 +16,6 @@
 
 using namespace std;
 
-void applyNbyNfilter(Image &image, int n, int (*filter)(int, int, int, Image&));
-int inten(Image &image, int row, int col);
-
 class MyApp : public QObject
 {
     Q_OBJECT;
@@ -47,6 +44,7 @@ public slots:
     bool Menu_PreDefined_GaussianNoise(Image &image);
     bool Menu_PreDefined_ImpulseNoise(Image &image);
 
+    //Filters
     bool Menu_Filters_Smooth(Image &image);
     bool Menu_Filters_Sharpen(Image &image);
     bool Menu_Filters_PlusShapedMedian(Image &image);
@@ -58,7 +56,6 @@ public slots:
     bool Menu_NeighborhoodFilters_Maximum(Image &image);
     bool Menu_NeighborhoodFilters_Minimum(Image &image);
     bool Menu_NeighborhoodFilters_Median(Image &image);
-
     bool Menu_NeighborhoodFilters_Mean(Image &image);
     bool Menu_NeighborhoodFilters_Range(Image &image);
     bool Menu_NeighborhoodFilters_StandardDeviation(Image &image);
@@ -66,9 +63,9 @@ public slots:
     //Edge Detectors
     bool Menu_Edge_SobolMagnitude(Image &image);
     bool Menu_Edge_SobolDirection(Image &image);
-    bool Menu_Edge_LaPlacian(Image &image);
+    bool Menu_Edge_Laplacian(Image &image);
     bool Menu_Edge_KirschMagnitude(Image &image);
-    bool Menu_Edge_Kirsch(Image &image);
+    bool Menu_Edge_KirschDirection(Image &image);
 };
 
 #endif // PROG2_H

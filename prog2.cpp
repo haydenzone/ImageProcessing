@@ -52,11 +52,31 @@
    @verbatim
    Date          Modification
    ------------  ---------------------------------------------------------------
-   Jan 27, 2013  Began experimenting with qtimagelib
-   Jan 30, 2013  Completed: grayscal, brightness, contrast
-   Feb  1, 2013  Completed: sepia, pseudocolor, histogram, log, gamm
-   Feb  2, 2013  Completed: all but histogram equilization
-   Feb  4, 2013  Documentation and Testing
+   Feb  4, 2013  Initial commit - Hayden Waisanen
+   Feb  5, 2013  Initial files added - Hayden Waisanen
+   Feb  6, 2013  Added authors. - Hayden Waisanen
+   Feb 11, 2013  Added all predefined imagelib methods - David Jarman
+   Feb 12, 2013  Added a generic way to apply filters - David Jarman
+   Feb 12, 2013  Implemented sharpening - David Jarman
+   Feb 12, 2013  Implemented the plus shaped median filter - David Jarman
+   Feb 21, 2013  Added file for neighborhood filters. Implemented maximum and
+                 minimum. - Hayden Waisanen
+   Feb 21, 2013  Completed N x N statistical filters - Hayden Waisanen
+   Feb 24, 2013  Added embossing and out of range filtering - David Jarman
+   Feb 24, 2013  Sobol edge and magnitude added - David Jarman
+   Feb 24, 2013  Fixed an off by 1 error in the applyNbyNfilter function - Hayden Waisanen
+   Feb 25, 2013  Moved edge detection functions into their own file. - Hayden Waisanen
+   Feb 27, 2013  Implemented Kirsch edge functions (possible bugs...) - Hayden Waisanen
+   Feb 27, 2013  Took Weiss's implementation notes to heart - David Jarman
+   Feb 28, 2013  Optimized min and max filter - Hayden Waisanen
+   Feb 28, 2013  Rotated kirsch filters to produce a result similar to
+                 Weiss - Hayden Waisanen
+   Feb 28, 2013  Implemented Gaussian Smoothing - Hayden Waisanen
+   Feb 28, 2013  Added readme - Hayden Waisanen
+   Feb 28, 2013  Implemented inten function which will allow for dealing with
+                 edges of images - Hayden Waisanen
+   Feb 28, 2013  Implemented inten for the gaussian filter - Hayden Waisanen
+
    @endverbatim
  *
  ******************************************************************************/
@@ -65,6 +85,7 @@
  * Includes
  ******************************************************************************/
 #include "prog2.h"
+#include "imageHelper.h"
 #include <QtCore/qmath.h>
 #include <QDebug>
 /***************************************************************************//**
@@ -558,35 +579,38 @@ bool MyApp::OutOfRangeNoiseCleaner(double threshold, Image &image)
     return true;
 }
 
-int inten(Image &image, int row, int col)
-{
-    int height = image.Height();
-    int width = image.Width();
 
-    int adjusted_row = (row+height) % height;
-    int adjusted_col = (col+width) % width;
-    return image[adjusted_row][adjusted_col];
-}
+/***************************************************************************//**
+ * @author Hayden Waisanen
+ *
+ * @par Description:
+ * Implements Gaussian smoothing.
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
 bool MyApp::Menu_Filters_GaussianSmoothing(Image &image)
 {
-    double sigma = 3.0;
-    double gaus_filter[50][50];
-    int x, y;
-    Image img_copy = image;
-    double total = 0;
-    int row_i, col_i;
+    double sigma = 3.0;         //Sigma for the filter
+    double gaus_filter[50][50]; //Array used to store filter
+    int x, y;                   //Temporary index variables
+    Image img_copy = image;     //Copy of input image
+    double total = 0;           //Temporary total variable
+    int row_i, col_i;           //Temporary index variable
 
     //Prompt for sigma
     if ( !Dialog( "Choose sigma" ).Add( sigma, "Sigma" ).Show() )
         return false;
 
 
-    //Estimate filter dimensions to ensure a sum of 1
+    //Estimate filter dimensions to ensure a sum of ~1
     //(Calculated with regression analysis)
     int dimension = sigma*5+5;
 
-    //Clip dimension at 50
-    dimension = (dimension > 50)?50:dimension;
+    //Clip dimension at 49
+    dimension = (dimension > 50)?49:dimension;
     if(dimension%2==0) dimension++; //Make sure dimension is odd
 
 
@@ -596,6 +620,7 @@ bool MyApp::Menu_Filters_GaussianSmoothing(Image &image)
     {
         for(int j = 0; j < dimension; j++)
         {
+            //Convert i and j to x and y for gaussian calculation
             x = i - (dimension-1)/2;
             y = j - (dimension-1)/2;
             gaus_filter[i][j] = (1 / (2 * 3.14159 * sigma ) ) * exp( -1 * ( double(x*x + y*y) / (2*sigma) ));
@@ -604,6 +629,8 @@ bool MyApp::Menu_Filters_GaussianSmoothing(Image &image)
     }
 
     int offset = (dimension-1)/2;
+
+    //Loop through every pixel in the image
     for(int row = 0; row < image.Height(); row++)
     {
         for( int col = 0; col < image.Width(); col++)
@@ -621,6 +648,7 @@ bool MyApp::Menu_Filters_GaussianSmoothing(Image &image)
                 }
             }
 
+            //Set calculated intensity
             image[row][col] = total;
 
         }
