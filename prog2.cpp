@@ -604,9 +604,9 @@ bool MyApp::Menu_Filters_GaussianSmoothing(Image &image)
     }
 
     int offset = (dimension-1)/2;
-    for(int row = offset; row < image.Height()-offset; row++)
+    for(int row = 0; row < image.Height(); row++)
     {
-        for( int col = offset; col < image.Width()-offset; col++)
+        for( int col = 0; col < image.Width(); col++)
         {
             total = 0.0;
             //Apply the filter
@@ -617,7 +617,7 @@ bool MyApp::Menu_Filters_GaussianSmoothing(Image &image)
                     row_i = i -offset;
                     col_i = j -offset;
 
-                    total += gaus_filter[i][j]*double(img_copy[row+row_i][col+col_i]);
+                    total += gaus_filter[i][j]*double(inten(img_copy,row+row_i,col+col_i));
                 }
             }
 
