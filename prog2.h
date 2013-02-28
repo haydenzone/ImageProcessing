@@ -17,6 +17,7 @@
 using namespace std;
 
 void applyNbyNfilter(Image &image, int n, int (*filter)(int, int, int, Image&));
+int inten(Image &image, int row, int col);
 
 class MyApp : public QObject
 {

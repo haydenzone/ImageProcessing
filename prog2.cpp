@@ -558,6 +558,15 @@ bool MyApp::OutOfRangeNoiseCleaner(double threshold, Image &image)
     return true;
 }
 
+int inten(Image &image, int row, int col)
+{
+    int height = image.Height();
+    int width = image.Width();
+
+    int adjusted_row = (row+height) % height;
+    int adjusted_col = (col+width) % width;
+    return image[adjusted_row][adjusted_col];
+}
 bool MyApp::Menu_Filters_GaussianSmoothing(Image &image)
 {
     double sigma = 3.0;
