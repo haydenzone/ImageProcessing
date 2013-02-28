@@ -125,7 +125,17 @@ bool MyApp::Menu_Edge_KirschMagnitude(Image &image)
 }
 void generate_kirsch_filters(int target[][3][3])
 {
-    int filter[8][3][3] = {
+    static int filter[8][3][3] = {
+                            {
+                                {-3, -3, 5},
+                                {-3, 0, 5},
+                                {-3, -3, 5}
+                            },
+                            {
+                                {-3, 5, 5},
+                                {-3, 0, 5},
+                                {-3, -3, -3}
+                            },
                             {
                                 {5, 5, 5},
                                 {-3, 0, -3},
@@ -155,16 +165,6 @@ void generate_kirsch_filters(int target[][3][3])
                                 {-3, -3, -3},
                                 {-3, 0, 5},
                                 {-3, 5, 5}
-                            },
-                            {
-                                {-3, -3, 5},
-                                {-3, 0, 5},
-                                {-3, -3, 5}
-                            },
-                            {
-                                {-3, 5, 5},
-                                {-3, 0, 5},
-                                {-3, -3, -3}
                             }
                         };
     for(int i = 0; i < 8; i++)
@@ -247,5 +247,4 @@ int kirsch_filter( int x, int y, int n, Image & image )
     //Map max_i into an intensity
 
     return (((max_i)%8)*255)/8;
-
 }
