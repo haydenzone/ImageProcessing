@@ -12,3 +12,4 @@ Extra Credit:
 
 Potential bugs:
     - Gaussian smoothing takes a long time. Can be sped up using seperability.
+    - Kirsch Operators run within 20 seconds, but the program has a tendancy to (not responding)
