@@ -58,7 +58,6 @@
  * @todo none
  *
  * @par Modifications and Development Timeline:
-<<<<<<< HEAD
    @verbatim
    Date          Modification
    ------------  ---------------------------------------------------------------
@@ -88,7 +87,6 @@
    Feb 28, 2013  Implemented inten for the gaussian filter - Hayden Waisanen
 
    @endverbatim
-=======
  * @verbatim
  * Date          Modification
  * ------------  ---------------------------------------------------------------

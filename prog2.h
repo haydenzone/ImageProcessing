@@ -52,13 +52,13 @@ public slots:
     bool Menu_Filters_Embossing(Image &image);
     bool Menu_Filters_GaussianSmoothing(Image &image);
 
-    //Neighborhood Filters
-    bool Menu_NeighborhoodFilters_Maximum(Image &image);
-    bool Menu_NeighborhoodFilters_Minimum(Image &image);
-    bool Menu_NeighborhoodFilters_Median(Image &image);
-    bool Menu_NeighborhoodFilters_Mean(Image &image);
-    bool Menu_NeighborhoodFilters_Range(Image &image);
-    bool Menu_NeighborhoodFilters_StandardDeviation(Image &image);
+    //Statistical Filters
+    bool Menu_StatisticalFilters_Maximum(Image &image);
+    bool Menu_StatisticalFilters_Minimum(Image &image);
+    bool Menu_StatisticalFilters_Median(Image &image);
+    bool Menu_StatisticalFilters_Mean(Image &image);
+    bool Menu_StatisticalFilters_Range(Image &image);
+    bool Menu_StatisticalFilters_StandardDeviation(Image &image);
 
     //Edge Detectors
     bool Menu_Edge_SobolMagnitude(Image &image);
