@@ -27,7 +27,7 @@ void intensity_distribution(Image& image, int x_0, int y_0, int n, int intensiti
 {
     for(int row = x_0; row < x_0+n; row++)
         for(int col = y_0; col < y_0+n; col++)
-            intensities[image[row][col]]++;
+            intensities[inten(image,row,col)]++;
     return;
 }
 
@@ -84,9 +84,9 @@ void applyNbyNfilter(Image &image, int n, int (*filter)(int, int, int, Image&))
     //Calculate span
     span = (n-1)/2;
 
-    //Loop through and apply filter (cutting out span on edges)
-    for(int row = span; row < (image.Height()-span); row++)
-        for(int col = span; col < (image.Width()-span); col++)
+    //Loop through and apply filter
+    for(int row = 0; row < (image.Height()); row++)
+        for(int col = 0; col < (image.Width()); col++)
             image[row][col].SetIntensity( filter(row, col, n, img_copy));
 
     return;

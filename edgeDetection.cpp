@@ -181,7 +181,7 @@ int laplacian_filter( int x, int y, int n, Image & image )
     {
         for( int j = 0; j < 3;  j++)
         {
-            sum += filter[i][j]*image[x-1+i][y-1+j];
+            sum += filter[i][j]*inten(image,x-1+i,y-1+j);
         }
     }
 
@@ -227,7 +227,7 @@ int kirsch_magnitude_filter( int x, int y, int n, Image & image )
         {
             for( int j = 0; j < 3;  j++)
             {
-                sum += filter[filter_i][i][j]*image[x-1+i][y-1+j];
+                sum += filter[filter_i][i][j]*inten(image,x-1+i,y-1+j);
             }
         }
         if(sum > max_sum)
@@ -283,7 +283,7 @@ int kirsch_filter( int x, int y, int n, Image & image )
         {
             for( int j = 0; j < 3;  j++)
             {
-                sum += filter[filter_i][i][j]*image[x-1+i][y-1+j];
+                sum += filter[filter_i][i][j]*inten(image,x-1+i,y-1+j);
             }
         }
 
