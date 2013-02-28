@@ -29,33 +29,35 @@ void applyNbyNfilter(Image &image, int n, int (*filter)(int, int, int, Image&))
 
 int max_filter(int x, int y, int n, Image& image)
 {
-    int max = 0;
+    int intensities[256] = {0};
     //Calculate upper left corner of n x n square
     int x_0 = x - ((n-1)/2);
     int y_0 = y - ((n-1)/2);
+    int max_i = 256; //1 above max pixel intensity
 
-    //Loop through and find the max
-    for(int row = x_0; row < x_0+n; row++)
-        for(int col = y_0; col < y_0+n; col++)
-            if( image[row][col] > max)
-                max = image[row][col];
+    //Get intensity distribution
+    intensity_distribution(image, x_0, y_0, n, intensities);
 
-    return max;
+    //Find first nonzero intensity in both directions (max and min)
+    while(intensities[--max_i] == 0);
+
+    return max_i;
 }
 int min_filter(int x, int y, int n, Image& image)
 {
-    int min = 266;
+    int intensities[256] = {0};
     //Calculate upper left corner of n x n square
     int x_0 = x - ((n-1)/2);
     int y_0 = y - ((n-1)/2);
+    int min_i = -1; //1 below min pixel intensity
 
-    //Loop through and find the min
-    for(int row = x_0; row < x_0+n; row++)
-        for(int col = y_0; col < y_0+n; col++)
-            if( image[row][col] < min)
-                min = image[row][col];
+    //Get intensity distribution
+    intensity_distribution(image, x_0, y_0, n, intensities);
 
-    return min;
+    //Find first nonzero intensity in both directions (max and min)
+    while(intensities[++min_i] == 0);
+
+    return min_i;
 }
 void intensity_distribution(Image& image, int x_0, int y_0, int n, int intensities[])
 {
