@@ -1,14 +1,15 @@
 /***************************************************************************//**
  * @file
- * @brief Demostrates some point processing on images
+ * @brief Demostrates some neighborhood processing on images
  *
- * @mainpage Program 1 - Point Processing
+ * @mainpage Program 2 - Neighborhood Processing
  *
  * @section course_section Course Information
  *
- * @authors Hayden Waisanen
+ * @author Hayden Waisanen
+ * @author David Jarman
  *
- * @date February 4, 2013
+ * @date February 28, 2013
  *
  * @par Instructor:
  *         Professor Weiss
@@ -22,14 +23,22 @@
  * @section program_section Program Information
  *
  * @details This program utilizes the the ImageLib to implement a series
- *      of point processes including:
- *          - Grayscale
- *          - Sepia
- *          - Histogram Equilization
- *          - Contrast Stretch
- *          - Brightness
- *          - Posterize
- *          - etc.
+ *      of neighborhood processes including:
+ *          - Smoothing filter
+ *          - Sharpening filter
+ *          - Median filter
+ *          - Noise cleaning
+ *          - Statistical filters
+ *              - Mean
+ *              - Median
+ *              - Min, Max
+ *              - Range
+ *              - Standard Deviation
+ *          - Embossing
+ *          - Edge Detection
+ *              - Sobol
+ *              - Kirsch
+ *              - Laplacian
  *
  * @section compile_section Compiling and Usage
  *
@@ -37,10 +46,10 @@
  *      None
  *
  * @par Usage:
-   @verbatim
-   $ qmake
-   $ prog3.exe
-   @endverbatim
+ * @verbatim
+ * $ qmake
+ * $ prog2.exe
+ * @endverbatim
  *
  * @section todo_bugs_modification_section Todo, Bugs, and Modifications
  *
@@ -49,6 +58,7 @@
  * @todo none
  *
  * @par Modifications and Development Timeline:
+<<<<<<< HEAD
    @verbatim
    Date          Modification
    ------------  ---------------------------------------------------------------
@@ -78,6 +88,13 @@
    Feb 28, 2013  Implemented inten for the gaussian filter - Hayden Waisanen
 
    @endverbatim
+=======
+ * @verbatim
+ * Date          Modification
+ * ------------  ---------------------------------------------------------------
+ *
+ *  @endverbatim
+>>>>>>> origin/David-Commenting
  *
  ******************************************************************************/
 
@@ -321,6 +338,19 @@ bool MyApp::Menu_Filters_PlusShapedMedian(Image &image)
     return PlusShapedMedianFilter(image);
 }
 
+
+
+/****************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Provides a menu option for applying an out of range noise clean
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
 bool MyApp::Menu_Filters_OutOfRangeNoiseClean(Image &image)
 {
     int threshold = 128;
@@ -333,6 +363,7 @@ bool MyApp::Menu_Filters_OutOfRangeNoiseClean(Image &image)
 
     return OutOfRangeNoiseCleaner(threshold, image);
 }
+
 
 
 /*******************************************************************************
@@ -460,6 +491,8 @@ bool MyApp::ApplyFilter(Image &image, int filter[3][3])
     return true;
 }
 
+
+
 /***************************************************************************//**
  * @author David Jarman
  *
@@ -504,12 +537,35 @@ bool MyApp::SharpeningFilter(Image &image)
 
 
 
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ *
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
 bool MyApp::Menu_Filters_Embossing(Image &image)
 {
     return Emboss(image);
 }
 
 
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Creates a 3D like effect on the image being processed
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
 bool MyApp::Emboss(Image &image)
 {
     for (int row = 0; row < image.Height() - 1; row++)
@@ -522,6 +578,7 @@ bool MyApp::Emboss(Image &image)
 
     return true;
 }
+
 
 
 /***************************************************************************//**
@@ -545,14 +602,29 @@ bool MyApp::PlusShapedMedianFilter(Image &image)
 }
 
 
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Performs an out of range noise cleaner
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
 bool MyApp::OutOfRangeNoiseCleaner(double threshold, Image &image)
 {
+    //Copy the image so we don't process transformed pixers
     Image copy = image;
 
     for (int row = 1; row < image.Height() - 1; row++)
     {
         for (int col = 1; col < image.Width() - 1; col++)
         {
+            //Sum the intensities of the pixels around the pixel
+            //we are processing
             double p_bar = 0.0;
             for (int p_row = row - 1; p_row <= row + 1; p_row++)
             {
@@ -578,8 +650,6 @@ bool MyApp::OutOfRangeNoiseCleaner(double threshold, Image &image)
 
     return true;
 }
-
-
 /***************************************************************************//**
  * @author Hayden Waisanen
  *
@@ -655,5 +725,3 @@ bool MyApp::Menu_Filters_GaussianSmoothing(Image &image)
     }
     return true;
 }
-
-

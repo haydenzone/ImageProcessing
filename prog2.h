@@ -9,7 +9,7 @@
  *
  * @authors Hayden Waisanen
  *
- * @date February 4, 2023
+ * @date February 4, 2013
  ******************************************************************************/
 #include <qtimagelib.h>
 #include <iostream>
