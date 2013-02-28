@@ -1,15 +1,41 @@
 #include "prog2.h"
 #include <qmath.h>
+
 int laplacian_filter( int x, int y, int n, Image & image );
 int kirsch_magnitude_filter( int x, int y, int n, Image & image );
 int kirsch_filter( int x, int y, int n, Image & image );
 
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Provides a menu for performing the Sobol magnitude edge detection
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
 bool MyApp::Menu_Edge_SobolMagnitude(Image &image)
 {
     return this->SobolMagnitude(image);
 }
 
 
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Performs a Sobol magnitude edge detection on the given image
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
 bool MyApp::SobolMagnitude(Image &image)
 {
     int edge[3] = {1, 2, 1};
@@ -37,6 +63,7 @@ bool MyApp::SobolMagnitude(Image &image)
                                copy[row-1][col+1] * edge[2]
                                ), 0, 255);
 
+
             image[row][col] = Clamp(qAbs(partial_x) + qAbs(partial_y), 0, 255);
         }
     }
@@ -45,12 +72,35 @@ bool MyApp::SobolMagnitude(Image &image)
 }
 
 
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Provides a menu for the Sobol direction edge detection
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
 bool MyApp::Menu_Edge_SobolDirection(Image &image)
 {
     return this->SobolDirection(image);
 }
 
 
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Performs a directional Sobol edge detection on the given image
+ *
+ * @param[in] image
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
 bool MyApp::SobolDirection(Image &image)
 {
     int edge[3] = {1, 2, 1};

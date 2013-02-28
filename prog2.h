@@ -9,7 +9,7 @@
  *
  * @authors Hayden Waisanen
  *
- * @date February 4, 2023
+ * @date February 4, 2013
  ******************************************************************************/
 #include <qtimagelib.h>
 #include <iostream>
@@ -46,6 +46,7 @@ public slots:
     bool Menu_PreDefined_GaussianNoise(Image &image);
     bool Menu_PreDefined_ImpulseNoise(Image &image);
 
+    //Filters
     bool Menu_Filters_Smooth(Image &image);
     bool Menu_Filters_Sharpen(Image &image);
     bool Menu_Filters_PlusShapedMedian(Image &image);
