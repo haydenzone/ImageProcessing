@@ -66,7 +66,7 @@
  ******************************************************************************/
 #include "prog2.h"
 #include <QtCore/qmath.h>
-
+#include <QDebug>
 /***************************************************************************//**
  * @author Hayden Waisanen
  * @author David Jarman
@@ -558,5 +558,65 @@ bool MyApp::OutOfRangeNoiseCleaner(double threshold, Image &image)
     return true;
 }
 
+bool MyApp::Menu_Filters_GaussianSmoothing(Image &image)
+{
+    double sigma = 3.0;
+    double gaus_filter[50][50];
+    int x, y;
+    Image img_copy = image;
+    double total = 0;
+    int row_i, col_i;
+
+    //Prompt for sigma
+    if ( !Dialog( "Choose sigma" ).Add( sigma, "Sigma" ).Show() )
+        return false;
+
+
+    //Estimate filter dimensions to ensure a sum of 1
+    //(Calculated with regression analysis)
+    int dimension = sigma*5+5;
+
+    //Clip dimension at 50
+    dimension = (dimension > 50)?50:dimension;
+    if(dimension%2==0) dimension++; //Make sure dimension is odd
+
+
+    //Generate the gaussian filter 5x5
+    sigma *= sigma; //Square sigma
+    for( int i = 0; i < dimension; i++)
+    {
+        for(int j = 0; j < dimension; j++)
+        {
+            x = i - (dimension-1)/2;
+            y = j - (dimension-1)/2;
+            gaus_filter[i][j] = (1 / (2 * 3.14159 * sigma ) ) * exp( -1 * ( double(x*x + y*y) / (2*sigma) ));
+
+        }
+    }
+
+    int offset = (dimension-1)/2;
+    for(int row = offset; row < image.Height()-offset; row++)
+    {
+        for( int col = offset; col < image.Width()-offset; col++)
+        {
+            total = 0.0;
+            //Apply the filter
+            for( int i = 0; i < dimension; i++)
+            {
+                for( int j = 0; j < dimension; j++)
+                {
+                    row_i = i -offset;
+                    col_i = j -offset;
+
+                    total += gaus_filter[i][j]*double(img_copy[row+row_i][col+col_i]);
+                }
+            }
+
+            image[row][col] = total;
+
+        }
+    }
+    return true;
+}
 
 

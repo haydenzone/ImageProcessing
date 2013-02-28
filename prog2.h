@@ -51,6 +51,7 @@ public slots:
     bool Menu_Filters_PlusShapedMedian(Image &image);
     bool Menu_Filters_OutOfRangeNoiseClean(Image &image);
     bool Menu_Filters_Embossing(Image &image);
+    bool Menu_Filters_GaussianSmoothing(Image &image);
 
     //Neighborhood Filters
     bool Menu_NeighborhoodFilters_Maximum(Image &image);
