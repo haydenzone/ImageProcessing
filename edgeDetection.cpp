@@ -78,7 +78,8 @@ bool MyApp::SobolDirection(Image &image)
                                copy[row-1][col+1] * edge[2]
                                );
 
-            image[row][col] = ((atan2(partial_x, partial_y) + M_PI) / (2 * M_PI)) * 255.0;
+            double angle = atan2(partial_x, partial_y);
+            image[row][col] = ((angle < 0 ? angle + 2 * M_PI : angle) / (2 * M_PI)) * 255.0;
         }
     }
 
