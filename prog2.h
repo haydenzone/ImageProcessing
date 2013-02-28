@@ -16,6 +16,8 @@
 
 using namespace std;
 
+void applyNbyNfilter(Image &image, int n, int (*filter)(int, int, int, Image&));
+
 class MyApp : public QObject
 {
     Q_OBJECT;
@@ -62,6 +64,9 @@ public slots:
     //Edge Detectors
     bool Menu_Edge_SobolMagnitude(Image &image);
     bool Menu_Edge_SobolDirection(Image &image);
+    bool Menu_Edge_LaPlacian(Image &image);
+    bool Menu_Edge_KirschMagnitude(Image &image);
+    bool Menu_Edge_Kirsch(Image &image);
 };
 
 #endif // PROG2_H
