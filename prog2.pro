@@ -1,5 +1,5 @@
 SOURCES += prog2.cpp \
-    neighborhoodFilters.cpp \
+    statisticalFilters.cpp \
     edgeDetection.cpp \
     imageHelper.cpp \
     filters.cpp

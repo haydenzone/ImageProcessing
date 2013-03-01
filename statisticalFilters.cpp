@@ -1,5 +1,5 @@
 /***************************************************************************//**
- * @file neighborhoodFilters.cpp
+ * @file statisticalFilters.cpp
  ******************************************************************************/
 
 /******************************************************************************
@@ -255,7 +255,7 @@ int std_filter(int x, int y, int n, Image& image)
  * @returns bool
  *
  ******************************************************************************/
-bool MyApp::Menu_NeighborhoodFilters_Maximum(Image &image)
+bool MyApp::Menu_StatisticalFilters_Maximum(Image &image)
 {
     int n = 0;
     if ( !Dialog( "Choose N dimension" ).Add( n, "N" ).Show() )
@@ -276,7 +276,7 @@ bool MyApp::Menu_NeighborhoodFilters_Maximum(Image &image)
  * @returns bool
  *
  ******************************************************************************/
-bool MyApp::Menu_NeighborhoodFilters_Minimum(Image &image)
+bool MyApp::Menu_StatisticalFilters_Minimum(Image &image)
 {
     int n = 3;
     if ( !Dialog( "Choose N dimension" ).Add( n, "N" ).Show() )
@@ -297,7 +297,7 @@ bool MyApp::Menu_NeighborhoodFilters_Minimum(Image &image)
  * @returns bool
  *
  ******************************************************************************/
-bool MyApp::Menu_NeighborhoodFilters_Median(Image &image)
+bool MyApp::Menu_StatisticalFilters_Median(Image &image)
 {
     int n = 3;
     if ( !Dialog( "Choose N dimension" ).Add( n, "N" ).Show() )
@@ -318,7 +318,7 @@ bool MyApp::Menu_NeighborhoodFilters_Median(Image &image)
  * @returns bool
  *
  ******************************************************************************/
-bool MyApp::Menu_NeighborhoodFilters_Mean(Image &image)
+bool MyApp::Menu_StatisticalFilters_Mean(Image &image)
 {
     int n = 3;
     if ( !Dialog( "Choose N dimension" ).Add( n, "N" ).Show() )
@@ -339,7 +339,7 @@ bool MyApp::Menu_NeighborhoodFilters_Mean(Image &image)
  * @returns bool
  *
  ******************************************************************************/
-bool MyApp::Menu_NeighborhoodFilters_Range(Image &image)
+bool MyApp::Menu_StatisticalFilters_Range(Image &image)
 {
     int n = 3;
     if ( !Dialog( "Choose N dimension" ).Add( n, "N" ).Show() )
@@ -360,7 +360,7 @@ bool MyApp::Menu_NeighborhoodFilters_Range(Image &image)
  * @returns bool
  *
  ******************************************************************************/
-bool MyApp::Menu_NeighborhoodFilters_StandardDeviation(Image &image)
+bool MyApp::Menu_StatisticalFilters_StandardDeviation(Image &image)
 {
     int n = 3;
     if ( !Dialog( "Choose N dimension" ).Add( n, "N" ).Show() )
