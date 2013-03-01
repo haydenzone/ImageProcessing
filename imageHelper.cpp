@@ -155,3 +155,119 @@ void generate_kirsch_filters(int target[][3][3])
                 target[i][j][k] = filter[i][j][k];
     return;
 }
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Clamps the value between the left and right values so that
+ * left <= value <= right
+ *
+ * @param[in] filter
+ *
+ * @returns qreal
+ *
+ ******************************************************************************/
+qreal Clamp(qreal value, qreal left, qreal right)
+{
+    //Swap left and right if left is greater than right
+    if(left > right)
+    {
+        int temp = left;
+        left = right;
+        right = temp;
+    }
+
+    return value < left ? left : value > right ? right : value;
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Creates a sum based on the filter
+ *
+ * @param[in] filter
+ *
+ * @returns int
+ *
+ ******************************************************************************/
+int CreateSum(int filter[3][3])
+{
+    int sum = 0;
+    for(int i = 0; i < 3; i++)
+    {
+        for(int j = 0; j < 3; j++)
+        {
+            sum += filter[i][j];
+        }
+    }
+
+    return sum;
+}
+
+
+
+/***************************************************************************//**
+ * @author David Jarman
+ *
+ * @par Description:
+ * Applies a generic filter to the image
+ *
+ * @param[in] image
+ * @param[in] filter
+ * @param[in] n
+ *
+ * @returns bool
+ *
+ ******************************************************************************/
+bool ApplyFilter(Image &image, int filter[3][3])
+{
+    int offset = 1;
+    int sum = CreateSum(filter);
+
+    Image copyImage = image;
+
+    if(sum <= 0)
+    {
+        return false;
+    }
+
+    double normalFilter[3][3] = {{0}, {0}, {0}};
+
+    for(int i = 0; i < 3; i++)
+    {
+        for(int j = 0; j < 3; j++)
+        {
+            normalFilter[i][j] = filter[i][j] / (double)sum;
+        }
+    }
+
+    for(int col = offset; col < image.Height() - offset; col++)
+    {
+        for(int row = offset; row < image.Width() - offset; row++)
+        {
+            double newIntensity = 0.0;
+
+            for(int colFilter = 0; colFilter < 3; colFilter++)
+            {
+                for(int rowFilter = 0; rowFilter < 3; rowFilter++)
+                {
+                    int imageCol = col - offset + colFilter;
+                    int imageRow = row - offset + rowFilter;
+
+                    newIntensity += normalFilter[colFilter][rowFilter] * copyImage[imageCol][imageRow].Intensity();
+                }
+            }
+
+            int clampedIntensity = Clamp(newIntensity + .5, 0, 255);
+
+            image[col][row].SetIntensity(clampedIntensity);
+        }
+    }
+
+    return true;
+}

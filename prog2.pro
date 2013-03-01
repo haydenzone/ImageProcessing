@@ -1,7 +1,8 @@
 SOURCES += prog2.cpp \
     neighborhoodFilters.cpp \
     edgeDetection.cpp \
-    imageHelper.cpp
+    imageHelper.cpp \
+    filters.cpp
 HEADERS += prog2.h \
     imageHelper.h
 CONFIG += qtimagelib

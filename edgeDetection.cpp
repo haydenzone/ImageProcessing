@@ -15,6 +15,8 @@
 int laplacian_filter( int x, int y, int n, Image & image );
 int kirsch_magnitude_filter( int x, int y, int n, Image & image );
 int kirsch_filter( int x, int y, int n, Image & image );
+bool SobolMagnitude(Image &image);
+bool SobolDirection(Image &image);
 
 
 
@@ -31,7 +33,7 @@ int kirsch_filter( int x, int y, int n, Image & image );
  ******************************************************************************/
 bool MyApp::Menu_Edge_SobolMagnitude(Image &image)
 {
-    return this->SobolMagnitude(image);
+    return SobolMagnitude(image);
 }
 
 
@@ -47,7 +49,7 @@ bool MyApp::Menu_Edge_SobolMagnitude(Image &image)
  * @returns bool
  *
  ******************************************************************************/
-bool MyApp::SobolMagnitude(Image &image)
+bool SobolMagnitude(Image &image)
 {
     int edge[3] = {1, 2, 1};
     Image copy = image;
@@ -97,7 +99,7 @@ bool MyApp::SobolMagnitude(Image &image)
  ******************************************************************************/
 bool MyApp::Menu_Edge_SobolDirection(Image &image)
 {
-    return this->SobolDirection(image);
+    return SobolDirection(image);
 }
 
 
@@ -112,7 +114,7 @@ bool MyApp::Menu_Edge_SobolDirection(Image &image)
  * @returns bool
  *
  ******************************************************************************/
-bool MyApp::SobolDirection(Image &image)
+bool SobolDirection(Image &image)
 {
     int edge[3] = {1, 2, 1};
     Image copy = image;

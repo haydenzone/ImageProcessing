@@ -20,20 +20,6 @@ class MyApp : public QObject
 {
     Q_OBJECT;
 
-protected:
-    qreal Clamp(qreal value, qreal left, qreal right);
-    int CreateSum(int filter[3][3]);
-
-    virtual bool ApplyFilter(Image &image, int filter[3][3]);
-    virtual bool SmoothingFilter(Image &image);
-    virtual bool SharpeningFilter(Image &image);
-    virtual bool PlusShapedMedianFilter(Image &image);
-    virtual bool OutOfRangeNoiseCleaner(double threshold, Image &image);
-    virtual bool Emboss(Image &image);
-    virtual bool SobolMagnitude(Image &image);
-    virtual bool SobolDirection(Image &image);
-
-
 public slots:
     //Palette Functions
     bool Menu_PreDefined_GrayScale(Image &image);
