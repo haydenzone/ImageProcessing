@@ -54,9 +54,9 @@ bool SobolMagnitude(Image &image)
     int edge[3] = {1, 2, 1};
     Image copy = image;
 
-    for (int row = 1; row < image.Height() - 1; row++)
+    for (int row = 1; row < (int)image.Height() - 1; row++)
     {
-        for (int col = 1; col < image.Width() - 1; col++)
+        for (int col = 1; col < (int)image.Width() - 1; col++)
         {
             double partial_x = Clamp((copy[row-1][col+1] * edge[0] +
                                copy[row][col+1]    * edge[1] +
@@ -77,7 +77,8 @@ bool SobolMagnitude(Image &image)
                                ), 0, 255);
 
 
-            image[row][col] = Clamp(qAbs(partial_x) + qAbs(partial_y), 0, 255);
+            image[row][col].SetGray(Clamp(qAbs(partial_x) + qAbs(partial_y), 0, 255));
+
         }
     }
 
@@ -119,9 +120,9 @@ bool SobolDirection(Image &image)
     int edge[3] = {1, 2, 1};
     Image copy = image;
 
-    for (int row = 1; row < image.Height() - 1; row++)
+    for (int row = 1; row < (int)image.Height() - 1; row++)
     {
-        for (int col = 1; col < image.Width() - 1; col++)
+        for (int col = 1; col < (int)image.Width() - 1; col++)
         {
             double partial_x = (copy[row-1][col+1] * edge[0] +
                                copy[row][col+1]    * edge[1] +
@@ -142,7 +143,7 @@ bool SobolDirection(Image &image)
                                );
 
             double angle = atan2(partial_x, partial_y);
-            image[row][col] = ((angle < 0 ? angle + 2 * M_PI : angle) / (2 * M_PI)) * 255.0;
+            image[row][col].SetGray(((angle < 0 ? angle + 2 * M_PI : angle) / (2 * M_PI)) * 255.0);
         }
     }
 

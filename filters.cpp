@@ -330,9 +330,9 @@ bool MyApp::Menu_Filters_Embossing(Image &image)
  ******************************************************************************/
 bool Emboss(Image &image)
 {
-    for (int row = 0; row < image.Height() - 1; row++)
+    for (int row = 0; row < (int)image.Height() - 1; row++)
     {
-        for (int col = 0; col < image.Width() - 1; col++)
+        for (int col = 0; col < (int)image.Width() - 1; col++)
         {
             image[row][col] = (image[row][col] - image[row+1][col+1]) / 2.0 + 128.5;
         }
@@ -381,9 +381,9 @@ bool OutOfRangeNoiseCleaner(double threshold, Image &image)
     //Copy the image so we don't process transformed pixers
     Image copy = image;
 
-    for (int row = 1; row < image.Height() - 1; row++)
+    for (int row = 1; row < (int)image.Height() - 1; row++)
     {
-        for (int col = 1; col < image.Width() - 1; col++)
+        for (int col = 1; col < (int)image.Width() - 1; col++)
         {
             //Sum the intensities of the pixels around the pixel
             //we are processing
@@ -463,9 +463,9 @@ bool MyApp::Menu_Filters_GaussianSmoothing(Image &image)
     int offset = (dimension-1)/2;
 
     //Loop through every pixel in the image
-    for(int row = 0; row < image.Height(); row++)
+    for(int row = 0; row < (int)image.Height(); row++)
     {
-        for( int col = 0; col < image.Width(); col++)
+        for( int col = 0; col < (int)image.Width(); col++)
         {
             total = 0.0;
             //Apply the filter

@@ -85,8 +85,8 @@ void applyNbyNfilter(Image &image, int n, int (*filter)(int, int, int, Image&))
     span = (n-1)/2;
 
     //Loop through and apply filter
-    for(int row = 0; row < (image.Height()); row++)
-        for(int col = 0; col < (image.Width()); col++)
+    for(int row = 0; row < (int)image.Height(); row++)
+        for(int col = 0; col < (int)image.Width(); col++)
             image[row][col].SetIntensity( filter(row, col, n, img_copy));
 
     return;
@@ -246,9 +246,9 @@ bool ApplyFilter(Image &image, int filter[3][3])
         }
     }
 
-    for(int col = offset; col < image.Height() - offset; col++)
+    for(int col = offset; col < (int)image.Height() - offset; col++)
     {
-        for(int row = offset; row < image.Width() - offset; row++)
+        for(int row = offset; row < (int)image.Width() - offset; row++)
         {
             double newIntensity = 0.0;
 
